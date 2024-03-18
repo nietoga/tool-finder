@@ -1,24 +1,42 @@
-import { Typography, Link } from "@mui/material";
+import { Typography, Link, Box, Grid } from "@mui/material";
+import Image from "next/image";
 
 const AboutPage = () => {
   const myEmail = "anietog1@eafit.edu.co";
 
   return (
     <main>
-      <Typography>
-        If you have a suggestion, please get in touch with us at email:
-        <Link href={`mailto:${myEmail}`}>{myEmail}</Link>
-      </Typography>
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Box position="relative" width={200} height={200}>
+          <Image
+            src="/toolbox.webp"
+            alt="Image of a simple red toolbox."
+            layout="fill"
+            objectFit="contain"
+          />
+        </Box>
 
-      <Typography>
-        In case you want to check our database, here it is:
-        <Link
-          href="https://docs.google.com/spreadsheets/d/1l5E_TxjhjFtqWKD29slE9YzBOd7Y7LO3n2jxNfINlB8/edit?usp=sharing"
-          target="_blank"
-        >
-          Database
-        </Link>
-      </Typography>
+        <Typography>
+          {"Have a suggestion? Drop us an email at: "}
+          <Link href={`mailto:${myEmail}`}>{myEmail}</Link>
+        </Typography>
+
+        <Typography>
+          {"Interested in exploring our database? Find it "}
+          <Link
+            href="https://docs.google.com/spreadsheets/d/1l5E_TxjhjFtqWKD29slE9YzBOd7Y7LO3n2jxNfINlB8/edit?usp=sharing"
+            target="_blank"
+          >
+            here
+          </Link>
+        </Typography>
+      </Grid>
     </main>
   );
 };
