@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../theme";
+import NavBar from "../components/navBar";
 
 export const metadata: Metadata = {
   title: "Tool Finder | EAFIT",
@@ -19,7 +20,10 @@ export default function RootLayout({
     <html lang="en">
       <AppRouterCacheProvider>
         <ThemeProvider theme={theme}>
-          <body>{children}</body>
+          <body>
+            <NavBar />
+            {children}
+          </body>
         </ThemeProvider>
       </AppRouterCacheProvider>
     </html>
