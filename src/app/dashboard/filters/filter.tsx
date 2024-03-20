@@ -27,7 +27,7 @@ type FilterProps = {
 
 export const Filter = ({ id, name, label, items = [] }: FilterProps) => {
   const [values, setValues] = useState<string[]>([]);
-  const { filters, addFilter } = useFiltersContext();
+  const { filters, addFilter, removeFilter } = useFiltersContext();
 
   useEffect(() => {
     const updatedValues: string[] = [];
@@ -44,9 +44,15 @@ export const Filter = ({ id, name, label, items = [] }: FilterProps) => {
     target: { value },
   }: SelectChangeEvent<typeof values>) => {
     const newValues = typeof value === "string" ? value.split(",") : value;
+    const valuesToRemove = values;
+    const valuesToAdd = newValues;
 
-    for (const newValue of newValues) {
-      addFilter({ column: name, value: newValue });
+    for (const valueToRemove of valuesToRemove) {
+      removeFilter({ column: name, value: valueToRemove });
+    }
+
+    for (const valueToAdd of valuesToAdd) {
+      addFilter({ column: name, value: valueToAdd });
     }
   };
 
