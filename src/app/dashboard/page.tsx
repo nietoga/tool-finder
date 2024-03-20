@@ -1,15 +1,24 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
-import { ToolListing } from "./toolListing";
-import { FilterListing } from "./filterListing";
+
+import { FiltersContextProvider } from "./filtersContext";
+import { FilterListing } from "./filters/filterListing";
+import { ActiveFilterListing } from "./activeFilters/activeFilterListing";
+import { ToolListing } from "./tools/toolListing";
 
 const DashboardPage = () => {
   return (
     <main>
-      <FilterListing />
-      <Box>
-        <ToolListing tools={[{ name: "Python" }]} />
-      </Box>
+      <FiltersContextProvider>
+        <Box>
+          <FilterListing />
+        </Box>
+        <Box>
+          <ActiveFilterListing />
+        </Box>
+        <Box>
+          <ToolListing tools={[{ name: "Python" }]} />
+        </Box>
+      </FiltersContextProvider>
     </main>
   );
 };

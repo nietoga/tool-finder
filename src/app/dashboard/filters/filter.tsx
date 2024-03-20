@@ -1,5 +1,6 @@
 "use client";
-import * as React from "react";
+
+import { ComponentProps, useEffect, useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -8,6 +9,8 @@ import TextField from "@mui/material/TextField";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
+
+import { useFiltersContext } from "../filtersContext";
 
 type Item = {
   value: string;
@@ -18,17 +21,33 @@ type FilterProps = {
   id: string;
   name: string;
   label: string;
-  additionalProps?: React.ComponentProps<typeof TextField>;
+  additionalProps?: ComponentProps<typeof TextField>;
   items: Item[];
 };
 
 export const Filter = ({ id, name, label, items = [] }: FilterProps) => {
-  const [values, setValues] = React.useState<string[]>([]);
+  const [values, setValues] = useState<string[]>([]);
+  const { filters, addFilter } = useFiltersContext();
+
+  useEffect(() => {
+    const updatedValues: string[] = [];
+    for (const filter of filters) {
+      if (filter.column == name) {
+        updatedValues.push(filter.value);
+      }
+    }
+
+    setValues(updatedValues);
+  }, [filters]);
 
   const handleChange = ({
     target: { value },
   }: SelectChangeEvent<typeof values>) => {
-    setValues(typeof value === "string" ? value.split(",") : value);
+    const newValues = typeof value === "string" ? value.split(",") : value;
+
+    for (const newValue of newValues) {
+      addFilter({ column: name, value: newValue });
+    }
   };
 
   const labelId = `${id}-label`;
