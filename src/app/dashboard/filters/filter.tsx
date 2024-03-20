@@ -1,6 +1,6 @@
 "use client";
 
-import { ComponentProps, useEffect, useState } from "react";
+import { ComponentProps, useCallback, useEffect, useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -38,23 +38,24 @@ export const Filter = ({ id, name, label, items = [] }: FilterProps) => {
     }
 
     setValues(updatedValues);
-  }, [filters]);
+  }, [filters, name]);
 
-  const handleChange = ({
-    target: { value },
-  }: SelectChangeEvent<typeof values>) => {
-    const newValues = typeof value === "string" ? value.split(",") : value;
-    const valuesToRemove = values;
-    const valuesToAdd = newValues;
+  const handleChange = useCallback(
+    ({ target: { value } }: SelectChangeEvent<typeof values>) => {
+      const newValues = typeof value === "string" ? value.split(",") : value;
+      const valuesToRemove = values;
+      const valuesToAdd = newValues;
 
-    for (const valueToRemove of valuesToRemove) {
-      removeFilter({ column: name, value: valueToRemove });
-    }
+      for (const valueToRemove of valuesToRemove) {
+        removeFilter({ column: name, value: valueToRemove });
+      }
 
-    for (const valueToAdd of valuesToAdd) {
-      addFilter({ column: name, value: valueToAdd });
-    }
-  };
+      for (const valueToAdd of valuesToAdd) {
+        addFilter({ column: name, value: valueToAdd });
+      }
+    },
+    [values, name, removeFilter, addFilter]
+  );
 
   const labelId = `${id}-label`;
   return (

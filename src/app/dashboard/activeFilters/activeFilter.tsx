@@ -10,7 +10,7 @@ export const ActiveFilter = ({ filter }: { filter: Filter }) => {
 
   const handleDelete = useCallback(() => {
     removeFilter(filter);
-  }, [filter]);
+  }, [filter, removeFilter]);
 
   return (
     <Chip label={filter.value} variant="outlined" onDelete={handleDelete} />

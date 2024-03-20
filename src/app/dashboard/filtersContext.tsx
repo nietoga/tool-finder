@@ -60,7 +60,7 @@ export const FiltersContextProvider = ({ children }: PropsWithChildren) => {
       addFilter,
       removeFilter,
     };
-  }, [filters]);
+  }, [filters, addFilter, removeFilter]);
 
   return (
     <FiltersContext.Provider value={contextValue}>
