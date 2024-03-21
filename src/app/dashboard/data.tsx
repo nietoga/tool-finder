@@ -47,28 +47,32 @@ export const data: ToolData[] = fileData.slice(1).map((toolData) => {
   return transformedData;
 });
 
-export const columnPossibleValues = Object.fromEntries(
-  columnIds.map((columnId) => {
-    if (singleValuedColumnIds.includes(columnId)) {
-      return [columnId, []];
-    }
-
-    const columnValues: string[] = [];
-
-    data.forEach((row) => {
-      const value = row[columnId as keyof ToolData];
-      const currentValues = typeof value === "string" ? [value] : value;
-
-      for (const currentValue of currentValues) {
-        if (
-          !columnValues.includes(currentValue) &&
-          ![NOT_APPLICABLE_VALUE, WILDCARD_VALUE].includes(currentValue)
-        ) {
-          columnValues.push(currentValue);
-        }
+export const getColumnsPossibleValues = (data: ToolData[]) => {
+  Object.fromEntries(
+    columnIds.map((columnId) => {
+      if (singleValuedColumnIds.includes(columnId)) {
+        return [columnId, []];
       }
-    });
 
-    return [columnId, columnValues];
-  })
-);
+      const columnValues: string[] = [];
+
+      data.forEach((row) => {
+        const value = row[columnId as keyof ToolData];
+        const currentValues = typeof value === "string" ? [value] : value;
+
+        for (const currentValue of currentValues) {
+          if (
+            !columnValues.includes(currentValue) &&
+            ![NOT_APPLICABLE_VALUE, WILDCARD_VALUE].includes(currentValue)
+          ) {
+            columnValues.push(currentValue);
+          }
+        }
+      });
+
+      return [columnId, columnValues];
+    })
+  );
+};
+
+export const columnPossibleValues = getColumnsPossibleValues(data);
