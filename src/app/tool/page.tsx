@@ -1,15 +1,13 @@
-"use client";
+import { Suspense } from "react";
 
-import { useSearchParams } from "next/navigation";
-
-import { data } from "../dashboard/data";
+import { ToolView } from "./ToolView";
 
 const ToolPage = () => {
-  const searchParams = useSearchParams();
-  const name = searchParams.get("name");
-
-  const toolData = data.find((tool) => tool.name === name);
-  return <div>{toolData ? JSON.stringify(toolData) : "Not Found"}</div>;
+  return (
+    <Suspense>
+      <ToolView />
+    </Suspense>
+  );
 };
 
 export default ToolPage;
