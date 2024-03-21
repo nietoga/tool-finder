@@ -9,13 +9,13 @@ const DashboardPage = () => {
   return (
     <main>
       <FiltersContextProvider>
-        <Box>
+        <Box margin={1}>
           <FilterListing />
         </Box>
-        <Box>
+        <Box margin={1}>
           <ActiveFilterListing />
         </Box>
-        <Box>
+        <Box margin={1}>
           <ToolListing />
         </Box>
       </FiltersContextProvider>
