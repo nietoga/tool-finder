@@ -10,9 +10,9 @@ export const FilterListing = () => {
         return (
           <Grid key={index} item xs={2}>
             <Filter
-              id={filter.name}
-              name={filter.name}
-              label={filter.label}
+              id={filter.id}
+              name={filter.id}
+              label={filter.name}
               items={filter.items}
             />
           </Grid>
