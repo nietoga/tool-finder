@@ -24,8 +24,8 @@ const singleValuedColumnIds = ["name", "description", "main_url"];
 
 const fileData = tsvFile as Object[];
 
-export const columnNames = fileData[0] as { [k: string]: string };
-export const columnIds = Object.keys(columnNames);
+export const columnsNames = fileData[0] as { [k: string]: string };
+export const columnIds = Object.keys(columnsNames);
 
 export const filterableColumnIds = columnIds.filter(
   (columnId) => !singleValuedColumnIds.includes(columnId)

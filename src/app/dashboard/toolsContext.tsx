@@ -12,7 +12,7 @@ import {
 import {
   data,
   ToolData,
-  columnNames,
+  columnsNames,
   filterableColumnIds,
   getColumnsPossibleValues,
   NOT_APPLICABLE_VALUE,
@@ -46,7 +46,7 @@ const calculateColumnsDataFromTools = (tools: Tool[]) => {
   return filterableColumnIds.map((columnId) => {
     return {
       id: columnId,
-      name: columnNames[columnId],
+      name: columnsNames[columnId],
       values: possibleValues[columnId],
     };
   });
