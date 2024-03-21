@@ -16,7 +16,7 @@ const DashboardPage = () => {
           <ActiveFilterListing />
         </Box>
         <Box>
-          <ToolListing tools={[{ name: "Python" }]} />
+          <ToolListing />
         </Box>
       </FiltersContextProvider>
     </main>

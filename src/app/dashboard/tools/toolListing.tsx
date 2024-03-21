@@ -1,17 +1,16 @@
+import { data } from "../data";
+import { Tool } from "./tool";
+
 type Tool = {
   name: string;
 };
 
-type ToolListingProps = {
-  tools: Tool[];
-};
-
-export const ToolListing = ({ tools = [] }: ToolListingProps) => {
+export const ToolListing = () => {
   return (
     <ul>
-      {tools.map((tool, index) => (
+      {data.map((tool, index) => (
         <li key={index}>
-          <span>{tool.name}</span>
+          <Tool tool={tool} />
         </li>
       ))}
     </ul>
