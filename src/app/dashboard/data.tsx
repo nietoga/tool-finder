@@ -61,8 +61,8 @@ export const columnPossibleValues = Object.fromEntries(
 
       for (const currentValue of currentValues) {
         if (
-          !columnValues.includes(currentValue) ||
-          [NOT_APPLICABLE_VALUE, WILDCARD_VALUE].includes(currentValue)
+          !columnValues.includes(currentValue) &&
+          ![NOT_APPLICABLE_VALUE, WILDCARD_VALUE].includes(currentValue)
         ) {
           columnValues.push(currentValue);
         }
