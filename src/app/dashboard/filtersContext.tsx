@@ -20,8 +20,25 @@ type FiltersContextValue = {
   removeFilter: (filter: ColumnFilter) => void;
 };
 
-const filterEqual = (filterA: ColumnFilter, filterB: ColumnFilter) =>
-  filterA.column == filterB.column && filterA.value == filterB.value;
+const compareFilters = (filterA: ColumnFilter, filterB: ColumnFilter) => {
+  if (filterA.column < filterB.column) {
+    return -1;
+  }
+
+  if (filterA.column > filterB.column) {
+    return 1;
+  }
+
+  if (filterA.value < filterB.value) {
+    return -1;
+  }
+
+  if (filterA.value > filterB.value) {
+    return 1;
+  }
+
+  return 0;
+};
 
 const FiltersContext = createContext<FiltersContextValue>({
   filters: [],
@@ -34,12 +51,12 @@ export const FiltersContextProvider = ({ children }: PropsWithChildren) => {
 
   const addFilter = useCallback((filterToAdd: ColumnFilter) => {
     setFilters((prevFilters) => {
-      const isFilterAlreadyApplied = prevFilters.find((filter) =>
-        filterEqual(filter, filterToAdd)
+      const isFilterAlreadyApplied = prevFilters.find(
+        (filter) => compareFilters(filter, filterToAdd) === 0
       );
 
       if (!isFilterAlreadyApplied) {
-        return [...prevFilters, filterToAdd];
+        return [...prevFilters, filterToAdd].toSorted(compareFilters);
       } else {
         return prevFilters;
       }
@@ -49,7 +66,7 @@ export const FiltersContextProvider = ({ children }: PropsWithChildren) => {
   const removeFilter = useCallback((filterToRemove: ColumnFilter) => {
     setFilters((prevFilters) => {
       return prevFilters.filter(
-        (filter) => !filterEqual(filter, filterToRemove)
+        (filter) => compareFilters(filter, filterToRemove) !== 0
       );
     });
   }, []);
