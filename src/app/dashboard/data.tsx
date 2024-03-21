@@ -48,7 +48,7 @@ export const data: ToolData[] = fileData.slice(1).map((toolData) => {
 });
 
 export const getColumnsPossibleValues = (data: ToolData[]) => {
-  Object.fromEntries(
+  return Object.fromEntries(
     columnIds.map((columnId) => {
       if (singleValuedColumnIds.includes(columnId)) {
         return [columnId, []];
