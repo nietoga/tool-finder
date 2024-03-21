@@ -1,18 +1,43 @@
-import { data } from "../data";
-import { Tool } from "./tool";
+"use client";
 
-type Tool = {
-  name: string;
-};
+import { useEffect, useState } from "react";
+import Stack from "@mui/material/Stack";
+
+import { data, ToolData, WILDCARD_VALUE, NOT_APPLICABLE_VALUE } from "../data";
+import { useFiltersContext } from "../filtersContext";
+import { ToolProps, Tool } from "./tool";
 
 export const ToolListing = () => {
+  const [tools, setTools] = useState<ToolProps[]>([]);
+  const { filters } = useFiltersContext();
+
+  useEffect(() => {
+    let currentTools = data;
+
+    for (const filter of filters) {
+      currentTools = currentTools.filter((tool) => {
+        const columnData = tool[filter.column as keyof ToolData];
+
+        const ignoreFilter =
+          columnData.includes(NOT_APPLICABLE_VALUE) ||
+          columnData.includes(WILDCARD_VALUE);
+
+        if (ignoreFilter) {
+          return true;
+        }
+
+        return columnData.includes(filter.value);
+      });
+    }
+
+    setTools(currentTools);
+  }, [filters]);
+
   return (
-    <ul>
-      {data.map((tool, index) => (
-        <li key={index}>
-          <Tool tool={tool} />
-        </li>
+    <Stack spacing={1}>
+      {tools.map((tool, index) => (
+        <Tool key={index} {...tool} />
       ))}
-    </ul>
+    </Stack>
   );
 };
