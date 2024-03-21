@@ -61,6 +61,7 @@ export const Filter = ({ id, label, values = [] }: FilterProps) => {
         onChange={handleChange}
         input={<OutlinedInput label={label} />}
         renderValue={(selected: string[]) => selected.join(", ")}
+        disabled={values.length === 0}
       >
         {values.map((value, index) => (
           <MenuItem key={index} value={value}>
