@@ -3,9 +3,9 @@
 import { useCallback } from "react";
 import Chip from "@mui/material/Chip";
 
-import { Filter, useFiltersContext } from "../filtersContext";
+import { ColumnFilter, useFiltersContext } from "../filtersContext";
 
-export const ActiveFilter = ({ filter }: { filter: Filter }) => {
+export const ActiveFilter = ({ filter }: { filter: ColumnFilter }) => {
   const { removeFilter } = useFiltersContext();
 
   const handleDelete = useCallback(() => {
