@@ -9,7 +9,13 @@ export const ActiveFilterListing = () => {
   const { filters } = useFiltersContext();
 
   return (
-    <Stack spacing={1} direction="row" flexWrap="wrap">
+    <Stack
+      paddingLeft={2}
+      paddingRight={2}
+      spacing={1}
+      direction="row"
+      flexWrap="wrap"
+    >
       {filters.map((filter, index) => {
         return <ActiveFilter key={index} filter={filter} />;
       })}
