@@ -1,60 +1,53 @@
 "use client";
 
-import { ComponentProps, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import TextField from "@mui/material/TextField";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
 
 import { useFiltersContext } from "../filtersContext";
 
-type Item = {
-  value: string;
-  label: string;
-};
-
 type FilterProps = {
   id: string;
-  name: string;
   label: string;
-  additionalProps?: ComponentProps<typeof TextField>;
-  items: Item[];
+  values: string[];
 };
 
-export const Filter = ({ id, name, label, items = [] }: FilterProps) => {
-  const [values, setValues] = useState<string[]>([]);
+export const Filter = ({ id, label, values = [] }: FilterProps) => {
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const { filters, addFilter, removeFilter } = useFiltersContext();
 
   useEffect(() => {
     const updatedValues: string[] = [];
+
     for (const filter of filters) {
-      if (filter.column == name) {
+      if (filter.column == id) {
         updatedValues.push(filter.value);
       }
     }
 
-    setValues(updatedValues);
-  }, [filters, name]);
+    setSelectedValues(updatedValues);
+  }, [filters, id]);
 
   const handleChange = useCallback(
-    ({ target: { value } }: SelectChangeEvent<typeof values>) => {
+    ({ target: { value } }: SelectChangeEvent<typeof selectedValues>) => {
       const newValues = typeof value === "string" ? value.split(",") : value;
-      const valuesToRemove = values;
+      const valuesToRemove = selectedValues;
       const valuesToAdd = newValues;
 
       for (const valueToRemove of valuesToRemove) {
-        removeFilter({ column: name, value: valueToRemove });
+        removeFilter({ column: id, value: valueToRemove });
       }
 
       for (const valueToAdd of valuesToAdd) {
-        addFilter({ column: name, value: valueToAdd });
+        addFilter({ column: id, value: valueToAdd });
       }
     },
-    [values, name, removeFilter, addFilter]
+    [selectedValues, id, removeFilter, addFilter]
   );
 
   const labelId = `${id}-label`;
@@ -63,18 +56,16 @@ export const Filter = ({ id, name, label, items = [] }: FilterProps) => {
       <InputLabel id={labelId}>{label}</InputLabel>
       <Select
         labelId={labelId}
-        name={name}
-        id={id}
         multiple
-        value={values}
+        value={selectedValues}
         onChange={handleChange}
         input={<OutlinedInput label={label} />}
         renderValue={(selected: string[]) => selected.join(", ")}
       >
-        {items.map((item, index) => (
-          <MenuItem key={index} value={item.value}>
-            <Checkbox checked={values.indexOf(item.value) > -1} />
-            <ListItemText primary={item.label} />
+        {values.map((value, index) => (
+          <MenuItem key={index} value={value}>
+            <Checkbox checked={selectedValues.indexOf(value) > -1} />
+            <ListItemText primary={value} />
           </MenuItem>
         ))}
       </Select>
