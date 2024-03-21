@@ -5,7 +5,7 @@ export const NOT_APPLICABLE_VALUE = "N/A";
 
 export const WILDCARD_VALUE = "*";
 
-type ToolData = {
+export type ToolData = {
   name: string;
   description: string;
   main_url: string;
