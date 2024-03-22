@@ -31,21 +31,24 @@ export const filterableColumnIds = columnIds.filter(
   (columnId) => !singleValuedColumnIds.includes(columnId)
 );
 
-export const data: ToolData[] = fileData.slice(1).map((toolData) => {
-  const transformedData = {} as ToolData;
+export const data: ToolData[] = fileData
+  .slice(1)
+  .map((toolData) => {
+    const transformedData = {} as ToolData;
 
-  for (let [column, value] of Object.entries(toolData)) {
-    if (singleValuedColumnIds.includes(column)) {
-      transformedData[column as keyof ToolData] = value;
-    } else {
-      //@ts-ignore
-      transformedData[column as keyof ToolData] =
-        (value as string)?.split(",") || [];
+    for (const [column, value] of Object.entries(toolData)) {
+      if (singleValuedColumnIds.includes(column)) {
+        transformedData[column as keyof ToolData] = value;
+      } else {
+        //@ts-ignore
+        transformedData[column as keyof ToolData] =
+          (value as string)?.split(",") || [];
+      }
     }
-  }
 
-  return transformedData;
-});
+    return transformedData;
+  })
+  .toSorted((a, b) => (a.name > b.name ? 1 : a.name < b.name ? -1 : 0));
 
 export const getColumnsPossibleValues = (data: ToolData[]) => {
   return Object.fromEntries(
@@ -70,7 +73,7 @@ export const getColumnsPossibleValues = (data: ToolData[]) => {
         }
       });
 
-      return [columnId, columnValues];
+      return [columnId, columnValues.toSorted()];
     })
   );
 };
