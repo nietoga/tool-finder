@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import Chip from "@mui/material/Chip";
 
 import { ColumnFilter, useFiltersContext } from "../filtersContext";
-import { columnNames } from "../data";
+import { columnsNames } from "../data";
 
 export const ActiveFilter = ({ filter }: { filter: ColumnFilter }) => {
   const { removeFilter } = useFiltersContext();
@@ -15,7 +15,7 @@ export const ActiveFilter = ({ filter }: { filter: ColumnFilter }) => {
 
   return (
     <Chip
-      label={`${columnNames[filter.column]}: ${filter.value}`}
+      label={`${columnsNames[filter.column]}: ${filter.value}`}
       variant="outlined"
       onDelete={handleDelete}
     />

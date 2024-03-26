@@ -5,6 +5,11 @@ export const NOT_APPLICABLE_VALUE = "N/A";
 
 export const WILDCARD_VALUE = "*";
 
+export type Tag = {
+  name: string;
+  value: string;
+};
+
 export type ToolData = {
   name: string;
   description: string;
@@ -18,61 +23,82 @@ export type ToolData = {
   extensibility: string[];
   focus: string[];
   additional_features: string[];
+  tags: Tag[];
 };
 
-const singleValuedColumnIds = ["name", "description", "main_url"];
+export const singleValuedColumnsIds = ["name", "description", "main_url"];
+
+export const filterableColumnsIds = [
+  "cost",
+  "platform",
+  "hosting",
+  "programming_language",
+  "support",
+  "documentation",
+  "extensibility",
+  "focus",
+  "additional_features",
+];
 
 const fileData = tsvFile as Object[];
 
-export const columnNames = fileData[0] as { [k: string]: string };
-export const columnIds = Object.keys(columnNames);
+export const columnsNames = fileData[0] as { [k: string]: string };
 
-export const filterableColumnIds = columnIds.filter(
-  (columnId) => !singleValuedColumnIds.includes(columnId)
-);
+export const columnsIds = Object.keys(columnsNames);
 
-export const data: ToolData[] = fileData.slice(1).map((toolData) => {
-  const transformedData = {} as ToolData;
+export const data: ToolData[] = fileData
+  .slice(1)
+  .map((toolData) => {
+    const transformedData = {} as ToolData;
 
-  for (let [column, value] of Object.entries(toolData)) {
-    if (singleValuedColumnIds.includes(column)) {
-      transformedData[column as keyof ToolData] = value;
-    } else {
-      //@ts-ignore
-      transformedData[column as keyof ToolData] =
-        (value as string)?.split(",") || [];
+    for (const [column, value] of Object.entries(toolData)) {
+      if (singleValuedColumnsIds.includes(column)) {
+        transformedData[column as keyof ToolData] = value;
+      } else if (filterableColumnsIds.includes(column)) {
+        //@ts-ignore
+        transformedData[column as keyof ToolData] =
+          (value as string)?.split(",") || [];
+      }
     }
-  }
 
-  return transformedData;
-});
+    transformedData.tags = [];
+    for (const columnId of filterableColumnsIds) {
+      const tag = {
+        name: columnsNames[columnId],
+        //@ts-ignore
+        value: transformedData[columnId as keyof ToolData].join(", "),
+      };
+
+      if (tag.value) {
+        transformedData.tags.push(tag);
+      }
+    }
+
+    return transformedData;
+  })
+  .toSorted((a, b) => (a.name > b.name ? 1 : a.name < b.name ? -1 : 0));
 
 export const getColumnsPossibleValues = (data: ToolData[]) => {
   return Object.fromEntries(
-    columnIds.map((columnId) => {
-      if (singleValuedColumnIds.includes(columnId)) {
-        return [columnId, []];
-      }
-
+    filterableColumnsIds.map((columnId) => {
       const columnValues: string[] = [];
 
       data.forEach((row) => {
-        const value = row[columnId as keyof ToolData];
-        const currentValues = typeof value === "string" ? [value] : value;
+        const values = row[columnId as keyof ToolData] as string[];
 
-        for (const currentValue of currentValues) {
+        for (const value of values) {
           if (
-            !columnValues.includes(currentValue) &&
-            ![NOT_APPLICABLE_VALUE, WILDCARD_VALUE].includes(currentValue)
+            !columnValues.includes(value) &&
+            ![NOT_APPLICABLE_VALUE, WILDCARD_VALUE].includes(value)
           ) {
-            columnValues.push(currentValue);
+            columnValues.push(value);
           }
         }
       });
 
-      return [columnId, columnValues];
+      return [columnId, columnValues.toSorted()];
     })
   );
 };
 
-export const columnPossibleValues = getColumnsPossibleValues(data);
+export const columnsPossibleValues = getColumnsPossibleValues(data);

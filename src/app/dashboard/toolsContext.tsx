@@ -12,13 +12,13 @@ import {
 import {
   data,
   ToolData,
-  columnNames,
-  filterableColumnIds,
-  getColumnsPossibleValues,
+  columnsNames,
+  filterableColumnsIds,
   NOT_APPLICABLE_VALUE,
   WILDCARD_VALUE,
+  columnsPossibleValues,
 } from "./data";
-import { useFiltersContext } from "./filtersContext";
+import { ColumnFilter, useFiltersContext } from "./filtersContext";
 
 const allTools = data;
 
@@ -40,54 +40,61 @@ const ToolsContext = createContext<ToolsContextValue>({
   columnsData: [],
 });
 
-const calculateColumnsDataFromTools = (tools: Tool[]) => {
-  const possibleValues = getColumnsPossibleValues(tools);
+const applyFilters = (filters: ColumnFilter[], tools: Tool[]) => {
+  const filtersToApply: { column: string; values: string[] }[] = [];
 
-  return filterableColumnIds.map((columnId) => {
-    return {
-      id: columnId,
-      name: columnNames[columnId],
-      values: possibleValues[columnId],
-    };
-  });
+  for (const filter of filters) {
+    let consolidatedFilter = filtersToApply.find(
+      (f) => f.column === filter.column
+    );
+
+    const found = !!consolidatedFilter;
+    consolidatedFilter ||= { column: filter.column, values: [] };
+
+    consolidatedFilter.values.push(filter.value);
+
+    if (!found) {
+      filtersToApply.push(consolidatedFilter);
+    }
+  }
+
+  for (const filterToApply of filtersToApply) {
+    tools = tools.filter((tool) => {
+      return filterToApply.values.some((valuesToInclude) => {
+        const columnValues = tool[filterToApply.column as keyof Tool];
+
+        //@ts-ignore
+        let includesSpecialValue = columnValues.includes(WILDCARD_VALUE);
+        //@ts-ignore
+        includesSpecialValue ||= columnValues.includes(NOT_APPLICABLE_VALUE);
+
+        if (includesSpecialValue) {
+          return true;
+        }
+
+        //@ts-ignore
+        return columnValues.includes(valuesToInclude);
+      });
+    });
+  }
+
+  return tools;
 };
 
-const useColumnsData = (tools: Tool[]) => {
-  const [columnsData, setColumnsData] = useState(
-    calculateColumnsDataFromTools(tools)
-  );
-
-  useEffect(() => {
-    setColumnsData(calculateColumnsDataFromTools(tools));
-  }, [tools]);
-
-  return columnsData;
-};
+const columnsData = filterableColumnsIds.map((columnId) => {
+  return {
+    id: columnId,
+    name: columnsNames[columnId],
+    values: columnsPossibleValues[columnId],
+  };
+});
 
 export const ToolsContextProvider = ({ children }: PropsWithChildren) => {
   const [tools, setTools] = useState<Tool[]>(allTools);
   const { filters } = useFiltersContext();
-  const columnsData = useColumnsData(tools);
 
   useEffect(() => {
-    let currentTools = allTools;
-
-    for (const filter of filters) {
-      currentTools = currentTools.filter((tool) => {
-        const columnData = tool[filter.column as keyof ToolData];
-
-        const ignoreFilter =
-          columnData.includes(NOT_APPLICABLE_VALUE) ||
-          columnData.includes(WILDCARD_VALUE);
-
-        if (ignoreFilter) {
-          return true;
-        }
-
-        return columnData.includes(filter.value);
-      });
-    }
-
+    const currentTools = applyFilters(filters, allTools);
     setTools(currentTools);
   }, [filters]);
 
@@ -96,7 +103,7 @@ export const ToolsContextProvider = ({ children }: PropsWithChildren) => {
       tools,
       columnsData,
     };
-  }, [tools, columnsData]);
+  }, [tools]);
 
   return (
     <ToolsContext.Provider value={contextValue}>
