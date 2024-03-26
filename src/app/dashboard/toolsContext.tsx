@@ -13,10 +13,10 @@ import {
   data,
   ToolData,
   columnsNames,
-  filterableColumnIds,
+  filterableColumnsIds,
   NOT_APPLICABLE_VALUE,
   WILDCARD_VALUE,
-  columnPossibleValues,
+  columnsPossibleValues,
 } from "./data";
 import { ColumnFilter, useFiltersContext } from "./filtersContext";
 
@@ -63,13 +63,16 @@ const applyFilters = (filters: ColumnFilter[], tools: Tool[]) => {
       return filterToApply.values.some((valuesToInclude) => {
         const columnValues = tool[filterToApply.column as keyof Tool];
 
-        if (
-          columnValues.includes(WILDCARD_VALUE) ||
-          columnValues.includes(NOT_APPLICABLE_VALUE)
-        ) {
+        //@ts-ignore
+        let includesSpecialValue = columnValues.includes(WILDCARD_VALUE);
+        //@ts-ignore
+        includesSpecialValue ||= columnValues.includes(NOT_APPLICABLE_VALUE);
+
+        if (includesSpecialValue) {
           return true;
         }
 
+        //@ts-ignore
         return columnValues.includes(valuesToInclude);
       });
     });
@@ -78,11 +81,11 @@ const applyFilters = (filters: ColumnFilter[], tools: Tool[]) => {
   return tools;
 };
 
-const columnsData = filterableColumnIds.map((columnId) => {
+const columnsData = filterableColumnsIds.map((columnId) => {
   return {
     id: columnId,
     name: columnsNames[columnId],
-    values: columnPossibleValues[columnId],
+    values: columnsPossibleValues[columnId],
   };
 });
 
