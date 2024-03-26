@@ -22,7 +22,7 @@ export const ToolListing = () => {
   return (
     <Stack spacing={1}>
       {tools.map((tool, index) => (
-        <Tool key={index} {...tool} tags={toolsTags[index]} />
+        <Tool key={tool.name} {...tool} tags={toolsTags[index]} />
       ))}
     </Stack>
   );

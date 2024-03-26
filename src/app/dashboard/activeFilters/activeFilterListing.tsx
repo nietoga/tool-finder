@@ -19,9 +19,9 @@ export const ActiveFilterListing = () => {
       flexWrap="wrap"
       justifyContent="center"
     >
-      {filters.map((filter, index) => {
+      {filters.map((filter) => {
         return (
-          <Box key={index} paddingBottom={1}>
+          <Box key={`${filter.column}:${filter.value}`} paddingBottom={1}>
             <ActiveFilter filter={filter} />
           </Box>
         );

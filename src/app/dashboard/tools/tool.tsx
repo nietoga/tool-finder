@@ -13,8 +13,8 @@ export const Tool = ({ name, description, main_url, tags = [] }: ToolProps) => {
       <Typography variant="h6">{name}</Typography>
       {tags ? (
         <Stack direction="row" flexWrap="wrap">
-          {tags.map((tag, index) => (
-            <Box paddingRight={1} key={index}>
+          {tags.map((tag) => (
+            <Box paddingRight={1} key={tag}>
               <Chip label={tag} variant="outlined" />
             </Box>
           ))}
