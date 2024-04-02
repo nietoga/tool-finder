@@ -10,9 +10,9 @@ export const FilterListing = () => {
 
   return (
     <Grid container spacing={1}>
-      {columnsData.map((filter, index) => {
+      {columnsData.map((filter) => {
         return (
-          <Grid key={index} item xs={2}>
+          <Grid key={filter.id} item xs={2}>
             <Filter id={filter.id} label={filter.name} values={filter.values} />
           </Grid>
         );

@@ -6,7 +6,7 @@ import Link from "@mui/material/Link";
 const NavBar = () => {
   return (
     <Box>
-      <AppBar position="relative" color="inherit">
+      <AppBar position="relative" color="inherit" elevation={0}>
         <Toolbar>
           <Link variant="h6" href="/dashboard">
             Dashboard

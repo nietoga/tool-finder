@@ -63,8 +63,8 @@ export const Filter = ({ id, label, values = [] }: FilterProps) => {
         renderValue={(selected: string[]) => selected.join(", ")}
         disabled={values.length === 0}
       >
-        {values.map((value, index) => (
-          <MenuItem key={index} value={value}>
+        {values.map((value) => (
+          <MenuItem key={`${value}`} value={value}>
             <Checkbox checked={selectedValues.indexOf(value) > -1} />
             <ListItemText primary={value} />
           </MenuItem>
