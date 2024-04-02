@@ -5,6 +5,10 @@ export const NOT_APPLICABLE_VALUE = "N/A";
 
 export const WILDCARD_VALUE = "*";
 
+export const POSITIVE_VALUE = "Yes";
+
+export const NEGATIVE_VALUE = "No";
+
 export type Tag = {
   name: string;
   value: string;
@@ -14,6 +18,12 @@ export type ToolData = {
   name: string;
   description: string;
   main_url: string;
+  license?: string;
+  source_url?: string;
+  docs_url?: string;
+  teaching_materials?: string;
+  differentiating_factors?: string;
+
   cost: string[];
   platform: string[];
   hosting: string[];
@@ -26,7 +36,16 @@ export type ToolData = {
   tags: Tag[];
 };
 
-export const singleValuedColumnsIds = ["name", "description", "main_url"];
+export const singleValuedColumnsIds = [
+  "name",
+  "description",
+  "main_url",
+  "license",
+  "source_url",
+  "docs_url",
+  "teaching_materials",
+  "differentiating_factors",
+];
 
 export const filterableColumnsIds = [
   "cost",
