@@ -1,5 +1,7 @@
 import { Typography, Link, Box, Stack, Chip } from "@mui/material";
 
+import { ShowMore } from "./showMore";
+
 export type ToolProps = {
   name: string;
   description: string;
@@ -26,6 +28,20 @@ export const Tool = ({ name, description, main_url, tags = [] }: ToolProps) => {
         </Link>
       </Typography>
       <Typography variant="body1">{description}</Typography>
+      <ShowMore>
+        <Typography variant="body1">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent at
+          interdum nisi. Curabitur vitae pulvinar eros. Nulla facilisi.
+          Phasellus pretium malesuada mi, sit amet porttitor erat dapibus in.
+          Phasellus nibh mauris, rhoncus rutrum felis sed, ultricies tristique
+          felis. Curabitur eu ligula imperdiet tellus dignissim finibus nec at
+          purus. Quisque dictum et dolor ultrices rhoncus. Etiam tincidunt nisl
+          dui, nec rhoncus quam iaculis sed. Class aptent taciti sociosqu ad
+          litora torquent per conubia nostra, per inceptos himenaeos. In hac
+          habitasse platea dictumst. Morbi imperdiet luctus orci, feugiat luctus
+          tellus vehicula id. In pharetra arcu eget felis mattis hendrerit.
+        </Typography>
+      </ShowMore>
     </Box>
   );
 };
