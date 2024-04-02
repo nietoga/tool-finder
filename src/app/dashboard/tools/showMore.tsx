@@ -10,9 +10,7 @@ export const ShowMore = ({ children }: PropsWithChildren) => {
 
   return (
     <>
-      <Collapse in={isOpen} collapsedSize={10}>
-        {children}
-      </Collapse>
+      <Collapse in={isOpen}>{children}</Collapse>
       <Link component="button" variant="body2" onClick={toggleSeeMore}>
         {isOpen ? "Show less" : "Show more..."}
       </Link>
