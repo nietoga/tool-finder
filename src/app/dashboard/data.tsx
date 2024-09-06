@@ -23,6 +23,9 @@ export type ToolData = {
   docs_url?: string;
   teaching_materials?: string;
   differentiating_factors?: string;
+  pros: string[];
+  cons: string[];
+  reference_papers: string[];
 
   cost: string[];
   platform: string[];
@@ -59,6 +62,13 @@ export const filterableColumnsIds = [
   "additional_features",
 ];
 
+export const multiValuedColumnsIds = [
+  ...filterableColumnsIds,
+  "pros",
+  "cons",
+  "reference_papers",
+];
+
 const fileData = tsvFile as Object[];
 
 export const columnsNames = fileData[0] as { [k: string]: string };
@@ -73,7 +83,7 @@ export const data: ToolData[] = fileData
     for (const [column, value] of Object.entries(toolData)) {
       if (singleValuedColumnsIds.includes(column)) {
         transformedData[column as keyof ToolData] = value;
-      } else if (filterableColumnsIds.includes(column)) {
+      } else if (multiValuedColumnsIds.includes(column)) {
         //@ts-ignore
         transformedData[column as keyof ToolData] =
           (value as string)?.split(",") || [];

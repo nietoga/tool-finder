@@ -14,6 +14,9 @@ import SourceIcon from "@mui/icons-material/Source";
 import CodeIcon from "@mui/icons-material/Code";
 import SchoolIcon from "@mui/icons-material/School";
 import InfoIcon from "@mui/icons-material/Info";
+import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 
 import { ShowMore } from "./showMore";
 
@@ -27,6 +30,9 @@ export type ToolProps = {
   docs_url?: string;
   teaching_materials?: string;
   differentiating_factors?: string;
+  pros: string[];
+  cons: string[];
+  reference_papers: string[];
 };
 
 export const Tool = ({
@@ -39,6 +45,9 @@ export const Tool = ({
   docs_url,
   teaching_materials,
   differentiating_factors,
+  pros,
+  cons,
+  reference_papers,
 }: ToolProps) => {
   const additionalInformation = [];
 
@@ -127,6 +136,41 @@ export const Tool = ({
           <InfoIcon />
         </ListItemIcon>
         <ListItemText primary={differentiating_factors}></ListItemText>
+      </ListItem>
+    );
+  }
+
+  for (const pro of pros) {
+    additionalInformation.push(
+      <ListItem disablePadding disableGutters>
+        <ListItemIcon>
+          <ThumbUpIcon />
+        </ListItemIcon>
+        <ListItemText primary={pro}></ListItemText>
+      </ListItem>
+    );    
+  }
+
+  for (const con of cons) {
+    additionalInformation.push(
+      <ListItem disablePadding disableGutters>
+        <ListItemIcon>
+          <ThumbDownIcon />
+        </ListItemIcon>
+        <ListItemText primary={con}></ListItemText>
+      </ListItem>
+    );
+  }
+
+  if (reference_papers) {
+    const quotedReferences = reference_papers.map(ref => '"' + ref + '"');
+
+    additionalInformation.push(
+      <ListItem disablePadding disableGutters>
+        <ListItemIcon>
+          <FormatQuoteIcon />
+        </ListItemIcon>
+        <ListItemText primary={"This tool appears on the paper(s) " + quotedReferences.join(",")}></ListItemText>
       </ListItem>
     );
   }
