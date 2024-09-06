@@ -25,6 +25,7 @@ export type ToolData = {
   differentiating_factors?: string;
   pros: string[];
   cons: string[];
+  reference_papers: string[];
 
   cost: string[];
   platform: string[];
