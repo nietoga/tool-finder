@@ -9,7 +9,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import Checkbox from "@mui/material/Checkbox";
 import ListItemText from "@mui/material/ListItemText";
 
-import { useFiltersContext } from "../filtersContext";
+import { useFiltersContext } from "./filtersContext";
 
 type FilterProps = {
   id: string;

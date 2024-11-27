@@ -17,8 +17,8 @@ import {
   NOT_APPLICABLE_VALUE,
   WILDCARD_VALUE,
   columnsPossibleValues,
-} from "./data";
-import { ColumnFilter, useFiltersContext } from "./filtersContext";
+} from "../../data/data";
+import { ColumnFilter, useFiltersContext } from "../filters/filtersContext";
 
 const allTools = data;
 

@@ -1,10 +1,10 @@
 import Box from "@mui/material/Box";
 
-import { FiltersContextProvider } from "./filtersContext";
-import { FilterListing } from "./filters/filterListing";
-import { ActiveFilterListing } from "./activeFilters/activeFilterListing";
-import { ToolListing } from "./tools/toolListing";
-import { ToolsContextProvider } from "./toolsContext";
+import { FiltersContextProvider } from "../../components/filters/filtersContext";
+import { FilterListing } from "@tool-finder/components/filters/filterListing";
+import { ActiveFilterListing } from "@tool-finder/components/filters/activeFilterListing";
+import { ToolListing } from "@tool-finder/components/tools/toolListing";
+import { ToolsContextProvider } from "../../components/tools/toolsContext";
 
 const DashboardPage = () => {
   return (

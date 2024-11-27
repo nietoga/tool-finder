@@ -3,7 +3,7 @@
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 
-import { useFiltersContext } from "../filtersContext";
+import { useFiltersContext } from "./filtersContext";
 import { ActiveFilter } from "./activeFilter";
 
 export const ActiveFilterListing = () => {
