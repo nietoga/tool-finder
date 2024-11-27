@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import Stack from "@mui/material/Stack";
 
-import { useToolsContext } from "../toolsContext";
+import { useToolsContext } from "./toolsContext";
 import { Tool } from "./tool";
 
 export const ToolListing = () => {

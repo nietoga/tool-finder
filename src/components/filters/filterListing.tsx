@@ -3,7 +3,7 @@
 import Grid from "@mui/material/Grid";
 
 import { Filter } from "./filter";
-import { useToolsContext } from "../toolsContext";
+import { useToolsContext } from "../tools/toolsContext";
 
 export const FilterListing = () => {
   const { columnsData } = useToolsContext();

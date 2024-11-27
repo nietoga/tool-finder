@@ -3,8 +3,8 @@
 import { useCallback } from "react";
 import Chip from "@mui/material/Chip";
 
-import { ColumnFilter, useFiltersContext } from "../filtersContext";
-import { columnsNames } from "../data";
+import { ColumnFilter, useFiltersContext } from "./filtersContext";
+import { columnsNames } from "../../data/data";
 
 export const ActiveFilter = ({ filter }: { filter: ColumnFilter }) => {
   const { removeFilter } = useFiltersContext();
